@@ -130,4 +130,11 @@
 - (void)dispatchAuthenticationChallenge:(NSURLAuthenticationChallenge*)challenge;
 - (void)cancel;
 
+/**
+ * NSURLConnection delegate helpers
+ */
+- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSHTTPURLResponse*)response;
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection;
+- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data;
+
 @end
