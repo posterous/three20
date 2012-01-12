@@ -16,6 +16,8 @@
 
 #import "Three20UI/TTImageView.h"
 
+#import "Three20Core/TTGlobalCorePaths.h"
+
 // UI
 #import "Three20UI/TTImageViewDelegate.h"
 
