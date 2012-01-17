@@ -25,6 +25,7 @@
 - (void)textField:(TTPickerTextField*)textField didAddCellAtIndex:(NSInteger)index;
 
 - (void)textField:(TTPickerTextField*)textField didRemoveCellAtIndex:(NSInteger)index;
+- (void)textField:(TTPickerTextField*)textField willRemoveCellAtIndex:(NSInteger)index;
 
 - (void)textFieldDidResize:(TTPickerTextField*)textField;
 

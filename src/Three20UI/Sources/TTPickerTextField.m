@@ -435,13 +435,18 @@ static const CGFloat kMinCursorWidth  = 50;
   for (int i = 0; i < _cellViews.count; ++i) {
     TTPickerViewCell* cell = [_cellViews objectAtIndex:i];
     if (cell.object == object) {
+      SEL selWill = @selector(textField:willRemoveCellAtIndex:);
+      if ([self.delegate respondsToSelector:selWill]) {
+            [self.delegate performSelector:selWill withObject:self withObject:(id)i];
+      }
+        
       if ([_selectedCell isEqual:cell]) _selectedCell = nil; self.text = nil;
 	  [_cellViews removeObjectAtIndex:i];
 	  [cell removeFromSuperview];
 		
-      SEL sel = @selector(textField:didRemoveCellAtIndex:);
-      if ([self.delegate respondsToSelector:sel]) {
-        [self.delegate performSelector:sel withObject:self withObject:(id)i];
+      SEL selDid = @selector(textField:didRemoveCellAtIndex:);
+      if ([self.delegate respondsToSelector:selDid]) {
+        [self.delegate performSelector:selDid withObject:self withObject:(id)i];
       }
       break;
     }
