@@ -44,8 +44,10 @@ typedef enum {
 }
 
 @property (nonatomic, readonly) TTActivityLabelStyle style;
+@property (nonatomic, readonly) UIActivityIndicatorView* activityIndicator;
 
 @property (nonatomic, copy)     NSString* text;
+@property (nonatomic, retain)   UIColor*  textColor;  
 @property (nonatomic, retain)   UIFont*   font;
 
 @property (nonatomic)           float     progress;
