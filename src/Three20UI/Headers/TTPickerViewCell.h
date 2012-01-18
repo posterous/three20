@@ -28,4 +28,6 @@
 @property (nonatomic, retain) UIFont*   font;
 @property (nonatomic)         BOOL      selected;
 
+@property (nonatomic)   CGFloat posterousMaxWidth;
+
 @end

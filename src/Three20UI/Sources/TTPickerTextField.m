@@ -92,9 +92,12 @@ static const CGFloat kMinCursorWidth  = 50;
   _cursorOrigin.x = marginLeft;
   _cursorOrigin.y = marginY;
   _lineCount = 1;
+    
+    CGFloat targetAreaWidth = self.frame.size.width - marginLeft;
 
   if (self.width) {
     for (TTPickerViewCell* cell in _cellViews) {
+        cell.posterousMaxWidth = targetAreaWidth;
       [cell sizeToFit];
 
       CGFloat lineWidth = _cursorOrigin.x + cell.frame.size.width + marginRight;

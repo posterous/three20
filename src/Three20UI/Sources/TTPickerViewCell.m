@@ -36,6 +36,7 @@ static const CGFloat kMaxWidth = 250;
 @synthesize object    = _object;
 @synthesize selected  = _selected;
 
+@synthesize posterousMaxWidth;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithFrame:(CGRect)frame {
@@ -78,9 +79,11 @@ static const CGFloat kMaxWidth = 250;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (CGSize)sizeThatFits:(CGSize)size {
+    CGFloat max = (self.posterousMaxWidth > 0.0) ? self.posterousMaxWidth : kMaxWidth;
+    
   CGSize labelSize = [_labelView.text sizeWithFont:_labelView.font];
   CGFloat width = labelSize.width + kPaddingX*2;
-  return CGSizeMake(width > kMaxWidth ? kMaxWidth : width, labelSize.height + kPaddingY*2);
+  return CGSizeMake(width > max ? max : width, labelSize.height + kPaddingY*2);
 }
 
 
