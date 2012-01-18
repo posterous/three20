@@ -81,46 +81,57 @@ static const CGFloat kMinCursorWidth  = 50;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (CGFloat)layoutCells {
-  CGFloat fontHeight = self.font.ttLineHeight;
-  CGFloat lineIncrement = fontHeight + kCellPaddingY*2 + kSpacingY;
-  CGFloat marginY = floor(fontHeight/kPaddingRatio);
-  CGFloat marginLeft = self.leftView
+    CGFloat fontHeight = self.font.ttLineHeight;
+    CGFloat lineIncrement = fontHeight + kCellPaddingY*2 + kSpacingY;
+    CGFloat marginY = floor(fontHeight/kPaddingRatio);
+    CGFloat marginLeft = self.leftView
     ? kPaddingX + self.leftView.width + kPaddingX/2
     : kPaddingX;
-  CGFloat marginRight = kPaddingX + (self.rightView ? kClearButtonSize : 0);
-
-  _cursorOrigin.x = marginLeft;
-  _cursorOrigin.y = marginY;
-  _lineCount = 1;
+    CGFloat marginRight = kPaddingX + (self.rightView ? kClearButtonSize : 0);
     
-    CGFloat targetAreaWidth = self.frame.size.width - marginLeft;
+    _cursorOrigin.x = marginLeft;
+    _cursorOrigin.y = marginY;
+    _lineCount = 1;
+        
+    if (self.width) {
+        for (TTPickerViewCell* cell in _cellViews) {
 
-  if (self.width) {
-    for (TTPickerViewCell* cell in _cellViews) {
-        cell.posterousMaxWidth = targetAreaWidth;
-      [cell sizeToFit];
-
-      CGFloat lineWidth = _cursorOrigin.x + cell.frame.size.width + marginRight;
-      if (lineWidth >= self.width) {
-        _cursorOrigin.x = marginLeft;
-        _cursorOrigin.y += lineIncrement;
-        ++_lineCount;
-      }
-
-      cell.frame = CGRectMake(_cursorOrigin.x, _cursorOrigin.y-kCellPaddingY,
-        cell.width, cell.height);
-      _cursorOrigin.x += cell.frame.size.width + kPaddingX;
+            if (self.leftView && ((_cursorOrigin.y+lineIncrement) > CGRectGetMaxY(self.leftView.frame))) {
+                marginLeft = kPaddingX;
+            }
+            
+            CGFloat remainingWidth = self.frame.size.width - _cursorOrigin.x;
+            if (remainingWidth > 40.) {
+                cell.posterousMaxWidth = remainingWidth - marginRight - 5.;
+            } else {
+                cell.posterousMaxWidth = self.frame.size.width - marginLeft;                
+            }
+            [cell sizeToFit];
+            
+            CGFloat lineWidth = _cursorOrigin.x + cell.frame.size.width + marginRight;
+            if (lineWidth >= self.width) {
+                _cursorOrigin.x = marginLeft;
+                _cursorOrigin.y += lineIncrement;
+                ++_lineCount;
+            }
+            
+            cell.frame = CGRectMake(_cursorOrigin.x, _cursorOrigin.y-kCellPaddingY,
+                                    cell.width, cell.height);
+            _cursorOrigin.x += cell.frame.size.width + kPaddingX;
+        }
+        
+        CGFloat remainingWidth = self.width - (_cursorOrigin.x + marginRight);
+        if (remainingWidth < kMinCursorWidth) {
+            if (self.leftView && ((_cursorOrigin.y+lineIncrement) > CGRectGetMaxY(self.leftView.frame))) {
+                marginLeft = kPaddingX;
+            }
+            _cursorOrigin.x = marginLeft;
+            _cursorOrigin.y += lineIncrement;
+            ++_lineCount;
+        }
     }
-
-    CGFloat remainingWidth = self.width - (_cursorOrigin.x + marginRight);
-    if (remainingWidth < kMinCursorWidth) {
-      _cursorOrigin.x = marginLeft;
-      _cursorOrigin.y += lineIncrement;
-        ++_lineCount;
-    }
-  }
-
-  return _cursorOrigin.y + fontHeight + marginY;
+    
+    return _cursorOrigin.y + fontHeight + marginY;
 }
 
 
