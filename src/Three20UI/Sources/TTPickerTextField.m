@@ -339,12 +339,13 @@ static const CGFloat kMinCursorWidth  = 50;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)showSearchResults:(BOOL)show {
   [super showSearchResults:show];
+    /* Disabled
   if (show) {
     [self scrollToEditingLine:YES];
 
   } else {
     [self scrollToVisibleLine:YES];
-  }
+  }//*/
 }
 
 
