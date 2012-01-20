@@ -486,16 +486,19 @@ static const CGFloat kMinCursorWidth  = 50;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setSelectedCell:(TTPickerViewCell*)cell {
-  if (_selectedCell) {
+  if (_selectedCell != cell) {
     _selectedCell.selected = NO;
   }
 
   _selectedCell = cell;
 
   if (_selectedCell) {
-    _selectedCell.selected = YES;
-    self.text = kSelected;
-
+    _selectedCell.selected = !_selectedCell.selected;
+      if (_selectedCell.selected)
+          self.text = kSelected;
+      else
+          self.text = kEmpty;
+      
   } else if (self.cells.count) {
     self.text = kEmpty;
   }
