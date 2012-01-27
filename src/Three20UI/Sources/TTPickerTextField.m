@@ -101,7 +101,7 @@ static const CGFloat kMinCursorWidth  = 50;
             }
             
             CGFloat remainingWidth = self.frame.size.width - _cursorOrigin.x;
-            if (remainingWidth > 40.) {
+            if (remainingWidth > 80.) {
                 cell.posterousMaxWidth = remainingWidth - marginRight - 5.;
             } else {
                 cell.posterousMaxWidth = self.frame.size.width - marginLeft;                
@@ -425,6 +425,8 @@ static const CGFloat kMinCursorWidth  = 50;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)addCellWithObject:(id)object {
+    
+    [self setSelectedCell:nil];
   TTPickerViewCell* cell = [[[TTPickerViewCell alloc] init] autorelease];
 
   NSString* label = [self labelForObject:object];
@@ -486,22 +488,31 @@ static const CGFloat kMinCursorWidth  = 50;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setSelectedCell:(TTPickerViewCell*)cell {
-  if (_selectedCell != cell) {
-    _selectedCell.selected = NO;
-  }
-
-  _selectedCell = cell;
-
-  if (_selectedCell) {
-    _selectedCell.selected = !_selectedCell.selected;
-      if (_selectedCell.selected)
-          self.text = kSelected;
-      else
-          self.text = kEmpty;
-      
-  } else if (self.cells.count) {
-    self.text = kEmpty;
-  }
+    
+    if (cell == _selectedCell) {
+        
+        // deselect
+        _selectedCell = nil;
+        cell.selected = NO;
+        self.text = kEmpty;
+        
+    } else {
+        
+        // deselect any previously selected cell
+        if (_selectedCell != nil) {
+            _selectedCell.selected = NO;
+            _selectedCell = nil;
+        }
+        
+        _selectedCell = cell;
+        
+        if (cell != nil) {
+            _selectedCell.selected = YES;
+            self.text = kSelected;            
+        } else {
+            self.text = kEmpty;
+        }
+    }
 }
 
 
